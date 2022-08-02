@@ -1,10 +1,9 @@
 import express, { Request, Response } from "express";
 import employerRoutes from "./routes/api/todos";
-import { config } from "./config/config";
+import { connectDB } from "./config/connectDB";
+import { getEnvironmentVariables } from "./config/environmentVariables";
 
-export const _config = config();
 const app = express();
-
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response): Response => {
@@ -12,5 +11,15 @@ app.get("/", (req: Request, res: Response): Response => {
 });
 
 app.use("/api/todos", employerRoutes);
+const start = async () => {
+    const { port } = getEnvironmentVariables();
+    
+    try {
+        await connectDB();
+        app.listen(port, () => console.log(`Listening on port: ${port}`));
+    } catch (error) {
+        console.log(`start-trycatch: ${error}`);
+    }
+};
 
-app.listen(_config.port);
+start();
