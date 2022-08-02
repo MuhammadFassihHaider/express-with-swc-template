@@ -1,0 +1,5 @@
+1. get all  the tasks
+2. create new task
+3. get single task
+4. update task
+5. delete task
